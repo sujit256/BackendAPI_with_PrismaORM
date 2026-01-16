@@ -1,27 +1,29 @@
-import { PrismaClient } from "@prisma/client"
-
-
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
-     log:process.env.NODE_ENV === 'development' ? ['query' , 'error' , 'warn'] : ['error'],
-})
-
+  log:
+    process.env.NODE_ENV === "development"
+      ? ["query", "error", "warn"]
+      : ["error"],
+});
 
 const connectDB = async () => {
-     try {
-        await prisma.$connect()
-        console.log("DB connected via Prisma")
-     } catch (error) {
-        console.error(`Database connection error:${error.message}`)
-        process.exit(1)
-     }
-}
-
+  try {
+    await prisma.$connect();
+    console.log("DB connected via Prisma");
+  } catch (error) {
+    console.error("Database connection error:", error);
+    process.exit(1);
+  }
+};
 
 const disconnectDB = async () => {
-     await prisma.$disconnect();
-}
+  try {
+    await prisma.$disconnect();
+    console.log("DB disconnected");
+  } catch (error) {
+    console.error("Error disconnecting DB:", error);
+  }
+};
 
-
-
-export {prisma , connectDB , disconnectDB}
+export { prisma, connectDB, disconnectDB };

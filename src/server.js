@@ -3,15 +3,18 @@ import dotenv from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 
 import movieRoutes from "./routes/movieRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 connectDB();
 
-const app = new express();
+const app = express();
 app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
 //api routes
 app.use("/api/movies", movieRoutes);
+app.use("/api/auth" , authRoutes)
 
 const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
@@ -21,7 +24,7 @@ const server = app.listen(PORT, () => {
 export default app;
 
 //handle unhanlded promise rejection {eg database connection errors }
-process.on("unhandleRejection", (err) => {
+process.on("unhandledRejection", (err) => {
   console.error("Unhandled Rejection:", err);
   server.close(async () => {
     await disconnectDB();
